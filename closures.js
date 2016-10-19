@@ -6,7 +6,7 @@ var outer = function(){
   var name = 'Tyler';
   return function(){
     return 'The original name was ' + name;
-  }
+  };
 };
 
 /****** INSTRUCTIONS PROBLEM 1 ******/
@@ -15,11 +15,11 @@ closure over the name variable. Invoke outer saving the return value into
 another variable called 'inner'. */
 
 // Code Here
-
+var inner = outer();
 //Once you do that, invoke inner.
 
 //Code Here
-
+inner();
 
 
 
@@ -48,7 +48,10 @@ Create a makeCall function that when invoked logs 'Calling Jake at 435-215-9248'
 in your console. */
 
   //Code Here
-
+function makeCall() {
+  var test = callFriend();
+  test('Jake');
+}
 
 
 
@@ -67,13 +70,17 @@ in your console. */
 properly. */
 
 //Code Here
-
-//Uncomment this once you make your function
-//   var count = makeCounter();
-//   count(); // 1
-//   count(); // 2
-//   count(); // 3
-//   count(); // 4
+function makeCounter() {
+  var counter = 1;
+  return function() {
+    return counter++;
+  };
+}
+  var count = makeCounter();
+  count(); // 1
+  count(); // 2
+  count(); // 3
+  count(); // 4
 
 
 
@@ -98,14 +105,21 @@ the module pattern to achieve this. */
 function counterFactory(value) {
 
   // Code here.
-
-
   return {
-  }
+    inc: function() {
+        value++;
+        return value;
+    },
+    dec: function() {
+        value--;
+        return value;
+    }
+  };
 }
 
 
 counter = counterFactory(10);
+
 
 
 
@@ -129,10 +143,12 @@ function motivation(firstname, lastname){
   var welcomeText = 'You\'re doing awesome, keep it up ';
 
   // code message function here.
-
+ function message() {
+  return welcomeText + firstname +" " + lastname + ".";
+}
 
   //Uncommment this to return the value of your invoked message function
-  //return message();
+  return message();
 
 }
 
@@ -172,12 +188,13 @@ var module = (function() {
 
   return {
     // Code here.
+		publicMethod: function() {
+			return privateMethod();
+		}
   };
 
 })();
-
-// Uncomment this after you create your public method
-//   module.publicMethod();
+module.publicMethod();
 
 
 
@@ -200,13 +217,13 @@ then 3, etc). Run this code in your console to see what the output is. */
 // To make this code work you will need to create a new scope for every iteration.
 function timeOutCounter() {
   for (var i = 0; i <= 5; i++) {
-    setTimeout(function() {
-      console.log(i);
-    }, i * 1000)
+    newScope(i);
   }
 
   function newScope(i) {
-    console.log(i)
+    setTimeout(function() {
+      console.log(i);
+    }, i * 1000);
   }
 }
 timeOutCounter();
@@ -222,15 +239,21 @@ timeOutCounter();
 
 var funcArray = [];
 
-/*
-  Make the following code work
+for (var i = 0; i <= 5; i++){
+	funcArray.push(get(i));
+}
+function get(i){
+	return function(){
+		return i;
+	};
+}
 
-  funcArray[0]() //0
-  funcArray[1]() //1
-  funcArray[2]() //2
-  funcArray[3]() //3
-  funcArray[4]() //4
-  funcArray[5]() //5
 
-  *Hint: Don't let this fool you. Break down what's really happening here.
-*/
+  // Make the following code work
+  funcArray[0](); //0
+  funcArray[1]();//1
+  funcArray[2]();
+  funcArray[3](); //3
+  funcArray[4](); //4
+  funcArray[5]();
+  // *Hint: Don't let this fool you. Break down what's really happening here.
